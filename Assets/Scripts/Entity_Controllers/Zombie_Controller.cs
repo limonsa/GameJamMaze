@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Entity;
+using Entities;
 
 public class Zombie_Controller : MonoBehaviour
 {
@@ -30,18 +30,26 @@ public class Zombie_Controller : MonoBehaviour
         {
             if (zombie.canMove)
             {
-                zAnimations.SetBool("walk", true);
-                this.transform.Translate(Vector3.forward * zombie.moveSpeed * Time.deltaTime);
+                zombie.position = this.transform.position;
+                Vector3 distance = gameManager.DetectPlayer(this.transform, zombie.noticeSphere);
+
+                if (distance.magnitude != 0)
+                {
+
+                    Vector3 direction = (distance - this.transform.position).normalized;
+                    Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+                    this.transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+
+                    zAnimations.SetBool("walk", true);
+                    this.transform.Translate(Vector3.forward * zombie.moveSpeed * Time.deltaTime);
+                }
             }
 
-            zombie.position = this.transform.position;
-            Vector3 distance = gameManager.DetectPlayer(this.transform, zombie.noticeSphere);
-
-            if(distance.magnitude != 0)
+            if(!zombie.canAttack && !zombie.canMove)
             {
-                Vector3 direction = (distance - this.transform.position).normalized;
-                Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-                this.transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+                zombie.canMove = true;
+                zAnimations.SetBool("idle", true);
+                zAnimations.SetBool("attack", false);
             }
 
         }
@@ -56,33 +64,29 @@ public class Zombie_Controller : MonoBehaviour
             zAnimations.SetBool("walk", false);
             zAnimations.SetBool("attack", true);
             zombie.canMove = false;
+            zombie.canAttack = true;
 
         }
     }
 
     private void OnCollisionExit(Collision collision)
     {
-
-        zAnimations.SetBool("walk", true);
-        zAnimations.SetBool("attack", false);
-        zombie.canMove = true;
-
+        if (collision.transform.tag == "Player")
+        {
+            zAnimations.SetBool("walk", true);
+            zAnimations.SetBool("attack", false);
+            zombie.canMove = true;
+            Debug.Log(zAnimations.GetBool(1));
+        }
     }
     private void OnCollisionStay(Collision collision)
     {
 
-      
-        if (collision.transform.tag == "Player")
-        {
-            Debug.Log("FoundPlayer");
-            if (zAnimations.GetBool("attackEnd"))
-            { 
-                Destroy(collision.gameObject);
-                zAnimations.SetBool("walk", true);
-                zAnimations.SetBool("attack", false);
-                zombie.canMove = true;
-            }
-        }
     }
 
+    public void AttackEnd()
+    {
+        gameManager.DamagePlayer(zombie.attackDMG, zombie);
+    }
+    
 }

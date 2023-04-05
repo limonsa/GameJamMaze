@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Entity;
+using Entities;
 
 public class Third_Person_Controller : MonoBehaviour
 {

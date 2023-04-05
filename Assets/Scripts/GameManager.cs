@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Entity;
+using Entities;
 public class GameManager : MonoBehaviour
 {
     // Start is called before the first frame update
 
     public bool isPaused = false;
+
 
     public List<GameObject> EnemyList = null;
     public Player player;
@@ -56,22 +57,49 @@ public class GameManager : MonoBehaviour
 
     private void PlayerCreation()
     {
-        player = new Entity.Player();
+        player = new Entities.Player();
         player.SetGeneralValues();
         player.position = playerObject.transform.position;
     }
 
     public Vector3 DetectPlayer(Transform enemyTransform, float enemyRange)
     {
-        float distance = Vector3.Distance(player.position, enemyTransform.position);
-        if (distance < enemyRange)
+        if (player.isAlive)
         {
-            return player.position;
+            float distance = Vector3.Distance(player.position, enemyTransform.position);
+            if (distance < enemyRange)
+            {
+                return player.position;
+            }
+            else
+                return Vector3.zero;
         }
         else
             return Vector3.zero;
     }
 
+    public void DamagePlayer(float enemyDamage, Entity entity)
+    {
+        if (player.health > 0)
+        {
+            player.health -= enemyDamage;
+            Debug.Log(player.health);
+        }
+        if(player.health <= 0)
+        {
+            player.health = 0;
+            player.isAlive = false;
+            KillPlayer(entity);
+        }
+
+
+    }
+
+    private void KillPlayer(Entity entity)
+    {
+        Destroy(playerObject);
+        entity.canAttack = false;
+    }
 
     // Update is called once per frame
     void Update()
