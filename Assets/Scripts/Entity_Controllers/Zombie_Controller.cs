@@ -10,7 +10,7 @@ public class Zombie_Controller : MonoBehaviour
     SphereCollider zombieAlert;
     public Zombie zombie;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         zAnimations = this.GetComponent<Animator>();
@@ -19,7 +19,7 @@ public class Zombie_Controller : MonoBehaviour
         zombie = new Zombie();
         zombie.SetGeneralValues();
        // zombieAlert.radius = zombie.noticeSphere;
-
+       zombie.isRoaring = false;
 
     }
 
@@ -28,28 +28,18 @@ public class Zombie_Controller : MonoBehaviour
     {
         if (gameManager.isPaused == false)
         {
-            if (zombie.canMove)
-            {
-                zombie.position = this.transform.position;
-                Vector3 distance = gameManager.DetectPlayer(this.transform, zombie.noticeSphere);
+            
 
-                if (distance.magnitude != 0)
-                {
-
-                    Vector3 direction = (distance - this.transform.position).normalized;
-                    Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-                    this.transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
-
-                    zAnimations.SetBool("walk", true);
-                    this.transform.Translate(Vector3.forward * zombie.moveSpeed * Time.deltaTime);
-                }
-            }
-
-            if(!zombie.canAttack && !zombie.canMove)
+            if (!zombie.canAttack && !zombie.canMove)
             {
                 zombie.canMove = true;
                 zAnimations.SetBool("idle", true);
                 zAnimations.SetBool("attack", false);
+            }
+
+            if (gameManager.player.isAlive == false)
+            {
+                gameManager.SetEntityIdle(zAnimations, zombie, this.gameObject);
             }
 
         }
@@ -57,8 +47,6 @@ public class Zombie_Controller : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(collision.transform.tag);
-
         if(collision.transform.tag == "Player")
         {
             zAnimations.SetBool("walk", false);
@@ -76,7 +64,7 @@ public class Zombie_Controller : MonoBehaviour
             zAnimations.SetBool("walk", true);
             zAnimations.SetBool("attack", false);
             zombie.canMove = true;
-            Debug.Log(zAnimations.GetBool(1));
+            zombie.canAttack = false;
         }
     }
     private void OnCollisionStay(Collision collision)
@@ -84,6 +72,34 @@ public class Zombie_Controller : MonoBehaviour
 
     }
 
+    public void FixedUpdate()
+    {
+        if (zombie.canMove)
+        {
+            zombie.position = this.transform.position;
+            Vector3 distance = gameManager.DetectPlayer(this.transform, zombie.noticeSphere, zAnimations);
+
+            if (zAnimations.GetBool("noticePlayer"))
+            {
+                //zAnimations.SetBool("isAware", true);
+                gameManager.RotateEntity(this.transform, distance, zombie, zAnimations);
+                //gAnimations.SetBool("walk", true);
+            }
+
+            if (zAnimations.GetBool("isAware"))
+            {
+                zAnimations.SetBool("idle", false);
+                zAnimations.SetBool("walk", true);
+                gameManager.MoveEntity(zAnimations, zombie, this.gameObject);
+            }
+            else
+            {
+                zAnimations.SetBool("idle", true);
+                zAnimations.SetBool("walk", false);
+            }
+
+        }
+    }
     public void AttackEnd()
     {
         gameManager.DamagePlayer(zombie.attackDMG, zombie);

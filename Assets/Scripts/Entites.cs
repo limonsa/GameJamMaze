@@ -21,12 +21,19 @@ namespace Entities
         public float noticeSphere = 10f;
         public bool attackEnd = false;
         public bool canAttack = false;
+        public float runSpeed = 2; //m/s
+
+        public string name;
+
+        public bool isRoaring = true;
+
     }
 
     public class Player : Entity
     {
         public void SetGeneralValues()
         {
+            name = "Player";
             health *= 10;
             moveSpeed *= 2;
             canMove = true;
@@ -44,13 +51,30 @@ namespace Entities
     {
         public void SetGeneralValues()
         {
+            name = "Zombie";
             health *= 4;
-            moveSpeed *= .8f;
+            moveSpeed *= .6f;
             canMove = true;
             canJump = true;
             attackDMG = 10;
             noticeSphere = 10;
         }
+    }
+
+    public class Golem : Entity
+    {
+        public void SetGeneralValues()
+        {
+            name = "Golem";
+            health *= 8;
+            moveSpeed *= .8f;
+            runSpeed *= 1.5f;
+            canMove = true;
+            canJump = true;
+            attackDMG = 25;
+            noticeSphere = 20;
+        }
+       
     }
 
 
