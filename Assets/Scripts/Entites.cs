@@ -27,6 +27,10 @@ namespace Entities
 
         public bool isRoaring = true;
 
+        public float damagePower; //Add damage impact on the victim's health
+        public float attackSpeedPower; //Powers up the speed attack
+        public int type; // 1 = weapon, 2 = meme, 3 = life
+
     }
 
     public class Player : Entity
@@ -76,6 +80,64 @@ namespace Entities
         }
        
     }
+
+    /*
+     * GAME SECRETS
+    **/
+
+    public class BananaGun : Entity
+    {
+        public void SetGeneralValues()
+        {
+            name = "BananaGun";
+            type = 1;
+            damagePower = 2f;
+            attackSpeedPower = 3f;
+        }
+    }
+
+    public class Hammer : Entity
+    {
+        public void SetGeneralValues()
+        {
+            name = "Hammer";
+            type = 1;
+            damagePower = 5f;
+            attackSpeedPower = 6f;
+        }
+    }
+
+    public class Katana : Entity
+    {
+        public void SetGeneralValues()
+        {
+            name = "Katana";
+            type = 1;
+            damagePower = 8f;
+            attackSpeedPower = 10f;
+        }
+    }
+
+    public class Meme : Entity
+    {
+        public void SetGeneralValues()
+        {
+            name = "Meme";
+            type = 2;
+        }
+    }
+
+    public class Life : Entity
+    {
+        public void SetGeneralValues()
+        {
+            name = "Life";
+            type = 3;
+            damagePower = -8f; //It heals instead of causing damage
+        }
+    }
+
+
 
 
 }
