@@ -9,7 +9,7 @@ public class GroundGPS : MonoBehaviour
     private MeshRenderer mr;
     private Vector3 size;
     private List<Vector3> srFixPos; //List of the positions of the Secrets in created in fixed positions
-
+    
     // Start is called before the first frame update
     void Start()
     {
