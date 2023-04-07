@@ -9,59 +9,64 @@ public class SecretsManager : MonoBehaviour
     GameManager gameManager;
     GroundGPS gps;
     private List<GameObject> availableSecrets = null;
-    public List<GameObject> secretsList = null;
-
-    //Animator zAnimations; //must be the animation of the secret
+    //public List<GameObject> secretsList = null;
+    List<Vector3> secretRoomLocations = null;
 
     // Start is called before the first frame update
     void Awake(){
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         gps = GameObject.Find("Ground").GetComponent<GroundGPS>();
         availableSecrets = new List<GameObject>(Resources.LoadAll<GameObject>("Secrets"));
-        //Debug.Log("FIRST SECRET ARE AVAILABLE? ... >>>>>>>>>>>>>>>>>>>>>>>>>> " + availableSecrets.Count);
-        for(int i=0; i < availableSecrets.Count; i++) {
-            /*int randomx = Random.Range(-10, 10);
-            int randomz = Random.Range(, 25);*/
-            Instantiate(availableSecrets[i], gps.getRandomPosition() , Quaternion.identity);
+
+        spawnFixedSecrets();
+
+    }
+
+    /*
+     * Creates and place secrets inside the 11 secret rooms
+     * alternating the secrets Entypes along the secret Entities
+     */
+    private void spawnFixedSecrets() {
+        gps.createFixedPositionedSecrets();
+        secretRoomLocations = gps.getFixedSecretsPositions();
+        for (int i = 0, j = 0; i < secretRoomLocations.Count; i++, j++)
+        {
+            Instantiate(availableSecrets[j], secretRoomLocations[i], Quaternion.identity);
             //Instantiate(availableSecrets[i], new Vector3(578, 2.1f, 409), Quaternion.identity);
+            if (j == availableSecrets.Count - 1)
+            {
+                j = 0;
+            }
         }
-        
-
-        //secretsList = new List<GameObject>();
-
-        //secretsList.Add(new BananaGun());
-
-        //zombie.SetGeneralValues();
-        /*
-        spawnWeapons();
-        spawnMemes();
-        spawnLives();
-        //zombieAlert = this.GetComponent<SphereCollider>();
-
-        zombie = new Zombie();
-        zombie.SetGeneralValues();
-        // zombieAlert.radius = zombie.noticeSphere;
-        zombie.isRoaring = false;*/
 
     }
 
-    private void spawnWeapons() {
-        Vector3 randomSpawnPosition = new Vector3(578, 2.1f , 409);
-        Instantiate(secretsList[0], randomSpawnPosition, Quaternion.identity);
-
-    }
-
-    private void spawnMemes()
+    public List<GameObject> FindAllWeapons()
     {
+        List<GameObject> temp = null;
+        temp.AddRange(GameObject.FindGameObjectsWithTag("BananaGun"));
+        temp.AddRange(GameObject.FindGameObjectsWithTag("Hammmer"));
+        temp.AddRange(GameObject.FindGameObjectsWithTag("Katana"));
+        return temp;
+
     }
 
-    private void spawnLives()
+    public GameObject[] FindAllLifes()
     {
+        return GameObject.FindGameObjectsWithTag("Life");
     }
 
-    private void FindAllEnemies(){
-        secretsList = new List<GameObject>();
-        secretsList.AddRange(GameObject.FindGameObjectsWithTag("Secret"));
+    public GameObject[] FindAllMemes()
+    {
+        return GameObject.FindGameObjectsWithTag("Meme");
+    }
+
+    public List<GameObject> FindAllSecrets(){
+        List<GameObject> temp = null;
+        temp = FindAllWeapons();
+        temp.AddRange(FindAllLifes());
+        temp.AddRange(FindAllMemes());
+        return temp;
     }
 
 }
