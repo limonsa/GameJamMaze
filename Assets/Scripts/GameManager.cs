@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour
 
     public bool isPaused = false;
 
-
     public List<GameObject> EnemyList = null;
     public Player player;
     public GameObject playerObject = null;
