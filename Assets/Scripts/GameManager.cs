@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> EnemyList = null;
     public Player player;
     public GameObject playerObject = null;
-    private Camera mainCamera = null;
+    //private Camera mainCamera = null;
     private GameObject currentBall = null;
     private GameObject nextBall = null;
     private int ballIndex = 1;
@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
         PlayerCreation();
         FindAllEnemies();
 
-        if (playerObject != null)
+       /* if (playerObject != null)
         {
             if (playerObject.transform.childCount > 0)
             {
@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
             {
                 Debug.LogWarning("Camera not attached to player Object as the First Child");
             }
-        }
+        }*/
 
     }
 
