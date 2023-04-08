@@ -12,14 +12,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> EnemyList = null;
     public Player player;
     public GameObject playerObject = null;
-    //private Camera mainCamera = null;
-    private GameObject currentBall = null;
-    private GameObject nextBall = null;
-    private int ballIndex = 1;
-    private int bammIndexMax = 9;
-
-    private GameObject currentBallObject;
-
+    
     private float weaponAddedForce = 0; //Force added to the attack after findng a Secret weapon
 
 
@@ -97,6 +90,23 @@ public class GameManager : MonoBehaviour
     }
 
     /*
+    public void DamageEnemy()
+    {
+        if (player.health > 0)
+        {
+            player.health -= (enemyDamage + weaponAddedForce);
+            Debug.Log(player.health);
+        }
+        if (player.health <= 0)
+        {
+            player.health = 0;
+            player.isAlive = false;
+            KillPlayer(entity);
+        }
+    }
+    */
+
+    /*
      * The health of the player can get a greater value when
      * the player collides with a Secret Life Entity
      */
@@ -170,7 +180,7 @@ public class GameManager : MonoBehaviour
     private void KillPlayer(Entity entity)
     {
        
-        Destroy(playerObject);
+       // Destroy(playerObject);
         entity.canAttack = false;
     }
     // Update is called once per frame
@@ -180,8 +190,10 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         mainThreadTime += Time.deltaTime;
-        player.position = playerObject.transform.position;
+        //player.position = playerObject.transform.position;
     }
+
+
 
     public void ShowTimeOfRun()
     {

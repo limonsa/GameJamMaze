@@ -23,6 +23,14 @@ public class GroundGPS : MonoBehaviour
         
     }
 
+    private void OnCollisionExit(Collision collision)
+    {
+        if(collision.transform.tag == "Player")
+        {
+            Debug.Log("JumpDetecte");
+        }
+    }
+
     public float getWidthX() {
         return size.x;
     }

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Entities;
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
     [Header("Ground Check")]
     public float playerHeight;
     public LayerMask whatIsGround;
-    bool grounded = true;
+    public bool grounded = true;
 
 
     public Transform orientation;
@@ -55,15 +55,19 @@ public class PlayerController : MonoBehaviour
         air,
         crouching
     }
+
+    //grapbing player from game COntroller
+    Player player;
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        player = GameObject.Find("GameManager").GetComponent<GameManager>().player;
+        rb = transform.GetComponent<Rigidbody>();//this.transform.GetChild(0).transform.GetComponent<Rigidbody>();
         rb.freezeRotation = true;
     }
 
     private void Update()
     {
-        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
+        //grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
         MyInput();
         SpeedControl();
         StateHandler();
@@ -81,6 +85,31 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         MovePlayer(); 
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+
+        //Debug.Log(collision.transform.tag);
+        if (collision.transform.tag == "Ground")
+        {
+         grounded = true;
+        }
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        //Debug.Log(collision.transform.tag);
+        
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.transform.tag == "Ground")
+        {
+            grounded = false;
+        }
+        //Debug.Log(collision.transform.tag);
     }
 
     private void StateHandler()
@@ -118,6 +147,7 @@ public class PlayerController : MonoBehaviour
 
         if (grounded)
         {
+
             rb.AddForce(10f * moveSpeed * moveDirection.normalized, ForceMode.Force);
         }
         else if(!grounded)
@@ -131,11 +161,16 @@ public class PlayerController : MonoBehaviour
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
+        //Debug.Log(horizontalInput);
+        //Debug.Log(verticalInput);
+
         if(Input.GetKey(jumpKey) && readyToJump && grounded)
         {
             readyToJump = false;
             Jump();
             Invoke(nameof(ResetJump), jumpCooldown);
+            //added for simpliciy
+            grounded = false;
         }
 
         if (Input.GetKey(crouchKey))
