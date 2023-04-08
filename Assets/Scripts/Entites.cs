@@ -57,7 +57,7 @@ namespace Entities
         {
             name = "Zombie";
             health *= 4;
-            moveSpeed *= .6f;
+            moveSpeed *= 1f;
             canMove = true;
             canJump = true;
             attackDMG = 10;
@@ -71,12 +71,12 @@ namespace Entities
         {
             name = "Golem";
             health *= 8;
-            moveSpeed *= .8f;
+            moveSpeed *= 2f;
             runSpeed *= 1.5f;
             canMove = true;
             canJump = true;
             attackDMG = 25;
-            noticeSphere = 20;
+            noticeSphere = 25;
         }
        
     }

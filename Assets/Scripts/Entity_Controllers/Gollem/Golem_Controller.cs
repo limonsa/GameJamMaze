@@ -53,7 +53,7 @@ public class Golem_Controller : MonoBehaviour
         if (golem.canMove)
         {
             golem.position = this.transform.position;
-            Vector3 distance = gameManager.DetectPlayer(this.transform, golem.noticeSphere, gAnimations);
+            Vector3 distance = gameManager.DetectPlayer(this.transform, golem, gAnimations);
 
 
             if (gAnimations.GetBool("noticePlayer"))
@@ -66,7 +66,7 @@ public class Golem_Controller : MonoBehaviour
                 golem.isRoaring = true;
             }
 
-            if (gAnimations.GetBool("isAware"))
+            if (gAnimations.GetBool("isAware") && golem.isRoaring == false)
             {
                 gAnimations.SetBool("idle", false);
                 gAnimations.SetBool("walk", true);
@@ -74,6 +74,7 @@ public class Golem_Controller : MonoBehaviour
             }
             else
             {
+                golem.isRoaring = true;
                 gAnimations.SetBool("idle", true);
                 gAnimations.SetBool("walk", false);
             }

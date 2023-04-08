@@ -12,14 +12,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> EnemyList = null;
     public Player player;
     public GameObject playerObject = null;
-    //private Camera mainCamera = null;
-    private GameObject currentBall = null;
-    private GameObject nextBall = null;
-    private int ballIndex = 1;
-    private int bammIndexMax = 9;
-
-    private GameObject currentBallObject;
-
+    
     private float weaponAddedForce = 0; //Force added to the attack after findng a Secret weapon
 
 
@@ -64,21 +57,38 @@ public class GameManager : MonoBehaviour
         player.position = playerObject.transform.position;
     }
 
-    public Vector3 DetectPlayer(Transform enemyTransform, float enemyRange, Animator eAnimations)
+    public Vector3 DetectPlayer(Transform enemyTransform, Entity entity, Animator eAnimations)
     {
         if (player.isAlive)
         {
             float distance = Vector3.Distance(player.position, enemyTransform.position);
-            if (distance < enemyRange)
+            if (distance < entity.noticeSphere)
             {
                 eAnimations.SetBool("noticePlayer", true);
                 return player.position;
             }
             else
+            {
+                if (!eAnimations.GetBool("idle"))
+                {
+                    SetIdle();
+                }
                 return Vector3.zero;
+            }
         }
         else
+        {
+            if(!eAnimations.GetBool("idle"))
+            {
+                SetIdle();
+            }
             return Vector3.zero;
+        }
+
+        void SetIdle()
+        {
+            SetEntityIdle(eAnimations, entity, enemyTransform.gameObject);
+        }
     }
 
     public void DamagePlayer(float enemyDamage, Entity entity)
@@ -95,6 +105,23 @@ public class GameManager : MonoBehaviour
             KillPlayer(entity);
         }
     }
+
+    /*
+    public void DamageEnemy()
+    {
+        if (player.health > 0)
+        {
+            player.health -= (enemyDamage + weaponAddedForce);
+            Debug.Log(player.health);
+        }
+        if (player.health <= 0)
+        {
+            player.health = 0;
+            player.isAlive = false;
+            KillPlayer(entity);
+        }
+    }
+    */
 
     /*
      * The health of the player can get a greater value when
@@ -138,12 +165,13 @@ public class GameManager : MonoBehaviour
             if (hit.transform.tag == "Player" && entity.isRoaring == false)
             {
                 eAnimations.SetBool("isAware", true);
-                //Debug.Log(entity);
+                
             }
             else
             {
                 Debug.DrawRay(eObjectTransform.position + new Vector3(0, 1, 0), lookRotation * Vector3.forward * entity.noticeSphere, Color.red);
                 eAnimations.SetBool("isAware", false);
+               // Debug.Log(hit.transform.name);
 
             }
         }
@@ -170,7 +198,7 @@ public class GameManager : MonoBehaviour
     private void KillPlayer(Entity entity)
     {
        
-        Destroy(playerObject);
+       // Destroy(playerObject);
         entity.canAttack = false;
     }
     // Update is called once per frame
@@ -182,6 +210,8 @@ public class GameManager : MonoBehaviour
         mainThreadTime += Time.deltaTime;
         player.position = playerObject.transform.position;
     }
+
+
 
     public void ShowTimeOfRun()
     {
