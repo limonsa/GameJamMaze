@@ -112,6 +112,8 @@ public class PlayerController : MonoBehaviour
         //Debug.Log(collision.transform.tag);
     }
 
+    //stuff
+
     private void StateHandler()
     {
         if (Input.GetKey(crouchKey))
