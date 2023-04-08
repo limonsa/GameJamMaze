@@ -77,7 +77,7 @@ public class Zombie_Controller : MonoBehaviour
         if (zombie.canMove)
         {
             zombie.position = this.transform.position;
-            Vector3 distance = gameManager.DetectPlayer(this.transform, zombie.noticeSphere, zAnimations);
+            Vector3 distance = gameManager.DetectPlayer(this.transform, zombie, zAnimations);
 
             if (zAnimations.GetBool("noticePlayer"))
             {
