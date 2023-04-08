@@ -375,8 +375,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 297dd41c18306104c9114632e0621b76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  senseX: 300
-  senseY: 300
+  senseX: 350
+  senseY: 350
   orentation: {fileID: 6609533840539055603}
 --- !u!114 &6609533840666583379
 MonoBehaviour:
