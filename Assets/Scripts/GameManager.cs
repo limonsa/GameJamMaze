@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
 
     private GameObject currentBallObject;
 
+    private float weaponAddedForce = 0; //Force added to the attack after findng a Secret weapon
+
 
     void Awake()
     {
@@ -83,7 +85,7 @@ public class GameManager : MonoBehaviour
     {
         if (player.health > 0)
         {
-            player.health -= enemyDamage;
+            player.health -= (enemyDamage + weaponAddedForce);
             Debug.Log(player.health);
         }
         if(player.health <= 0)
@@ -92,8 +94,26 @@ public class GameManager : MonoBehaviour
             player.isAlive = false;
             KillPlayer(entity);
         }
+    }
 
+    /*
+     * The health of the player can get a greater value when
+     * the player collides with a Secret Life Entity
+     */
+    public void HealPlayer(float healingValue)
+    {
+        if (player.isAlive) {
+            player.health += healingValue;
+            //Debug.Log("PLAYER HEALED by " + healingValue + ": New healt = " + player.health);
+        }
+    }
 
+    /*
+     * Gives to the player's attack the added force of the last secret weapon 
+     * found by the player
+     */
+    public void boostAttackPower(float f) {
+        weaponAddedForce = f;
     }
 
     public void MoveEntity(Animator eAnimations, Entity entity, GameObject eObject)
@@ -108,8 +128,8 @@ public class GameManager : MonoBehaviour
 
         if(entity.name == "Golem")
         {
-            Debug.Log(direction);
-            Debug.Log(lookRotation.eulerAngles);
+            //Debug.Log(direction);
+            //Debug.Log(lookRotation.eulerAngles);
         }
 
         RaycastHit hit;
@@ -118,7 +138,7 @@ public class GameManager : MonoBehaviour
             if (hit.transform.tag == "Player" && entity.isRoaring == false)
             {
                 eAnimations.SetBool("isAware", true);
-                Debug.Log(entity);
+                //Debug.Log(entity);
             }
             else
             {

@@ -27,9 +27,9 @@ namespace Entities
 
         public bool isRoaring = true;
 
-        public float damagePower; //Add damage impact on the victim's health
-        public float attackSpeedPower; //Powers up the speed attack
-        public int type; // 1 = weapon, 2 = meme, 3 = life
+        public float damagePower;       // Adds damage impact on the victim's health
+        public float attackSpeedPower;  // Powers up the speed attack
+        public int category;            // 1 = weapon, 2 = meme, 3 = life
 
     }
 
@@ -89,10 +89,15 @@ namespace Entities
     {
         public void SetGeneralValues()
         {
-            name = "BananaGun";
-            type = 1;
+            name = "BananaGun-Secret";
+            category = 1;
             damagePower = 2f;
             attackSpeedPower = 3f;
+        }
+
+        public string InformTypeOfEntity()
+        {
+            return "BananaGun";
         }
     }
 
@@ -100,10 +105,15 @@ namespace Entities
     {
         public void SetGeneralValues()
         {
-            name = "Hammer";
-            type = 1;
+            name = "Hammer-Secret";
+            category = 1;
             damagePower = 5f;
             attackSpeedPower = 6f;
+        }
+
+        public string InformTypeOfEntity()
+        {
+            return "Hammer";
         }
     }
 
@@ -111,10 +121,15 @@ namespace Entities
     {
         public void SetGeneralValues()
         {
-            name = "Katana";
-            type = 1;
+            name = "Katana-Secret";
+            category = 1;
             damagePower = 8f;
             attackSpeedPower = 10f;
+        }
+
+        public string InformTypeOfEntity()
+        {
+            return "Katana";
         }
     }
 
@@ -122,8 +137,13 @@ namespace Entities
     {
         public void SetGeneralValues()
         {
-            name = "Meme";
-            type = 2;
+            name = "Meme-Secret"; 
+            category = 2;
+        }
+
+        public string InformTypeOfEntity()
+        {
+            return "Meme";
         }
     }
 
@@ -131,9 +151,13 @@ namespace Entities
     {
         public void SetGeneralValues()
         {
-            name = "Life";
-            type = 3;
+            name = "Life-Secret";
+            category = 3;
             damagePower = -8f; //It heals instead of causing damage
+        }
+
+        public string InformTypeOfEntity() {
+            return "Life";
         }
     }
 
