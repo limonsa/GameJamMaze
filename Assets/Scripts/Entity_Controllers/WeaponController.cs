@@ -21,7 +21,7 @@ public class WeaponController : MonoBehaviour
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         rotate = true;
-        rotationSpeed = 5f;
+        rotationSpeed = 10f;
         if (gameObject.name.Contains("BananaGun")) {
             tempBananaGun = new BananaGun();
             weaponType = 1;

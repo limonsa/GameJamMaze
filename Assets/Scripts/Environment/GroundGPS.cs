@@ -62,15 +62,16 @@ public class GroundGPS : MonoBehaviour
     {
         float y = 2.1f;
         srFixPos = new List<Vector3>();
-        srFixPos.Add(new Vector3(545, y, 434)); //Secret room 1
+        srFixPos.Add(new Vector3(540, y, 434)); //Secret room 1
         srFixPos.Add(new Vector3(571, y, 472)); //Secret room 2 (rolling ball)
         srFixPos.Add(new Vector3(538, y, 536)); //Secret room 3 (fake wall entrance)
-        srFixPos.Add(new Vector3(527, y, 562)); //Secret room 4
+        srFixPos.Add(new Vector3(525, y, 556)); //Secret room 4
         srFixPos.Add(new Vector3(553, y, 557)); //Secret room 5 (lava floor entrance)
-        srFixPos.Add(new Vector3(540, y, 578)); //Secret room 6
+        srFixPos.Add(new Vector3(540, y, 575)); //Secret room 6
         srFixPos.Add(new Vector3(490, y, 542)); //Secret room 7
-        srFixPos.Add(new Vector3(485, y, 570)); //Secret room 8
+        srFixPos.Add(new Vector3(451, y, 512)); //Secret room 8
         srFixPos.Add(new Vector3(445, y, 476)); //Secret room 10 (waterfall)
+        srFixPos.Add(new Vector3(436, y, 568)); //Before entering to the center (to fight minotaur)
     }
 
     public void createMemesPositions()
