@@ -21,7 +21,7 @@ public class WeaponController : MonoBehaviour
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         rotate = true;
-        rotationSpeed = 5f;
+        rotationSpeed = 10f;
         if (gameObject.name.Contains("BananaGun")) {
             tempBananaGun = new BananaGun();
             weaponType = 1;
@@ -33,7 +33,7 @@ public class WeaponController : MonoBehaviour
             tempKatana = new Katana();
             weaponType = 3;
         }
-        Debug.Log("START WeaponController for: " + gameObject.name);
+        //Debug.Log("START WeaponController for: " + gameObject.name);
     }
 
     // Update is called once per frame
