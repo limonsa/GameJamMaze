@@ -33,7 +33,7 @@ public class WeaponController : MonoBehaviour
             tempKatana = new Katana();
             weaponType = 3;
         }
-        Debug.Log("START WeaponController for: " + gameObject.name);
+        //Debug.Log("START WeaponController for: " + gameObject.name);
     }
 
     // Update is called once per frame

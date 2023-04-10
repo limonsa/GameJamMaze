@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Entities;
 using UnityEngine;
+using UnityEngine.ProBuilder;
 
 public class SecretsManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class SecretsManager : MonoBehaviour
     private List<GameObject> availableSecrets = null;
     //public List<GameObject> secretsList = null;
     List<Vector3> secretRoomLocations = null;
+    List<Vector3> memeLocations = null;
 
     // Start is called before the first frame update
     void Awake(){
@@ -19,15 +21,16 @@ public class SecretsManager : MonoBehaviour
         availableSecrets = new List<GameObject>(Resources.LoadAll<GameObject>("Secrets"));
 
         spawnFixedSecrets();
+        spawnMemes();
 
     }
 
     /*
-     * Creates and place secrets inside the 11 secret rooms
+     * Creates and place secrets inside the X secret rooms
      * alternating the secrets Entypes along the secret Entities
      */
     private void spawnFixedSecrets() {
-        gps.createFixedPositionedSecrets();
+        gps.createSecretsFixedPositions();
         secretRoomLocations = gps.getFixedSecretsPositions();
         for (int i = 0, j = 0; i < secretRoomLocations.Count; i++, j++)
         {
@@ -38,6 +41,29 @@ public class SecretsManager : MonoBehaviour
                 j = 0;
             }
         }
+
+    }
+
+    /*
+     * Creates and place secrets inside the 4 memes
+     * alternating the secrets Entypes along the secret Entities
+     */
+    private void spawnMemes()
+    {
+        int i = 0;
+        List<GameObject> memes;
+        gps.createMemesPositions();
+        memeLocations = gps.getMemesPositions();
+        memes = new List<GameObject>(Resources.LoadAll<GameObject>("Memes"));
+        Instantiate(memes[0], memeLocations[i], Quaternion.Euler(0, 30, 0));
+        i++;
+        Instantiate(memes[0], memeLocations[i], Quaternion.Euler(0, 90, 0));
+        i++;
+        Instantiate(memes[0], memeLocations[i], Quaternion.Euler(0, 90, 0));
+        i++;
+        //Instantiate(memes[0], memeLocations[i], Quaternion.identity);
+        Instantiate(memes[0], memeLocations[i], Quaternion.Euler(0, 90, 0));
+        i++;
 
     }
 
