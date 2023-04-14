@@ -15,31 +15,23 @@ public class GameManager : MonoBehaviour
     
     private float weaponAddedForce = 0; //Force added to the attack after findng a Secret weapon
 
-
-    void Awake()
+    private void Start()
     {
+
         DontDestroyOnLoad(this);
         PlayerCreation();
         FindAllEnemies();
-
-       /* if (playerObject != null)
+    }
+    void Awake()
+    {
+        
+        if(playerObject == null)
         {
-            if (playerObject.transform.childCount > 0)
-            {
-                if (playerObject.transform.GetChild(0).GetComponent<Camera>())
-                {
-                    mainCamera = playerObject.transform.GetChild(0).GetComponent<Camera>();
-                }
-                else
-                {
-                    Debug.LogWarning("Camera not attached to player Object as the First Child");
-                }
-            }
+            if (GameObject.Find("Player"))
+                playerObject = GameObject.Find("Player");
             else
-            {
-                Debug.LogWarning("Camera not attached to player Object as the First Child");
-            }
-        }*/
+                Debug.Log("No Plyaer Present in this scene");
+        }
 
     }
 
@@ -54,7 +46,10 @@ public class GameManager : MonoBehaviour
         Debug.Log("Player Spawn");
         player = new Entities.Player();
         player.SetGeneralValues();
-        player.position = playerObject.transform.position;
+        if (playerObject != null)
+        {
+            player.position = playerObject.transform.position;
+        }
     }
 
     public Vector3 DetectPlayer(Transform enemyTransform, Entity entity, Animator eAnimations)
@@ -106,22 +101,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    /*
-    public void DamageEnemy()
+    
+    public void DamageEnemy(Entity entity, GameObject entityObject)
     {
-        if (player.health > 0)
+        if (entity.health > 0)
         {
-            player.health -= (enemyDamage + weaponAddedForce);
-            Debug.Log(player.health);
+            entity.health -= (player.attackDMG + weaponAddedForce);
+            Debug.Log(entity.health);
         }
-        if (player.health <= 0)
+        if (entity.health <= 0)
         {
-            player.health = 0;
-            player.isAlive = false;
-            KillPlayer(entity);
+            entity.health = 0;
+            entity.isAlive = false;
+            Debug.Log(entity + "has been destroyed");
+            Destroy(entityObject);
         }
     }
-    */
+    
 
     /*
      * The health of the player can get a greater value when
@@ -208,7 +204,8 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         mainThreadTime += Time.deltaTime;
-        player.position = playerObject.transform.position;
+        if (playerObject != null) 
+            player.position = playerObject.transform.position;
     }
 
 
@@ -231,7 +228,7 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene("Level_1");
+        SceneManager.LoadScene("Maze");
     }
     public void Quit()
     {

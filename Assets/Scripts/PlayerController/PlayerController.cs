@@ -102,12 +102,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnCollisionStay(Collision collision)
-    {
-        //Debug.Log(collision.transform.tag);
-        
-    }
-
     private void OnCollisionExit(Collision collision)
     {
         if (collision.transform.tag == "Ground")

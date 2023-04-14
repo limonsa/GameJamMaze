@@ -8,6 +8,8 @@ public class Zombie_Controller : MonoBehaviour
     GameManager gameManager;
     Animator zAnimations;
     SphereCollider zombieAlert;
+
+    
     public Zombie zombie;
     // Start is called before the first frame update
     void Awake()

@@ -87,6 +87,16 @@ public class WeaponController : MonoBehaviour
             Debug.Log("COLLITION BETWEEN PLAYER AND WEAPON");
             getGift();
         }
+
+        if(other.gameObject.tag == "Zombie")
+        {
+            Debug.Log("hit enemy");
+        }
+        if (other.gameObject.tag == "Golem")
+        {
+            Debug.Log("hit enemy");
+            //other.gameObject.GetComponent<>
+        }
     }
 }
 
