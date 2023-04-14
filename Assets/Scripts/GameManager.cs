@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     public GameObject playerObject = null;
     public GameObject endGameMenu = null;
     public GameObject timer = null;
-    
+    private GameObject pauseMenu = null;
     
     private float weaponAddedForce = 0; //Force added to the attack after findng a Secret weapon
 
@@ -28,31 +28,8 @@ public class GameManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-        
-        if(playerObject == null)
-        {
-            if (GameObject.Find("Player"))
-                playerObject = GameObject.Find("Player");
-            else
-                Debug.Log("No Plyaer Present in this scene");
-        }
 
-        if(timer == null)
-        {
-            if (GameObject.Find("Time"))
-                timer = GameObject.Find("Time");
-            else
-                Debug.Log("No Timer in Area");
-        }
-
-        if(endGameMenu == null)
-        {
-            if (GameObject.Find("EndGameMenu"))
-                endGameMenu = GameObject.Find("EndGameMenu").transform.GetChild(0).gameObject;
-            else
-                Debug.Log("No EndGameMenu in Area");
-        }
-
+        LoadObjects();
         SceneManager.sceneLoaded += OnLoad;
         DontDestroyOnLoad(this);
         PlayerCreation();
@@ -60,7 +37,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void OnLoad(Scene scene, LoadSceneMode mode)
+    private void LoadObjects()
     {
         mainThreadTime = 0;
         if (playerObject == null)
@@ -86,6 +63,18 @@ public class GameManager : MonoBehaviour
             else
                 Debug.Log("No EndGameMenu in Area");
         }
+        if (pauseMenu == null)
+        {
+            if (GameObject.Find("PauseGameMenu"))
+                pauseMenu = GameObject.Find("PauseGameMenu").transform.GetChild(0).gameObject;
+            else
+                Debug.Log("No Pause Game Menu in Area");
+        }
+    }
+
+    public void OnLoad(Scene scene, LoadSceneMode mode)
+    {
+        LoadObjects();
     }
 
     private void FindAllEnemies()
@@ -252,7 +241,7 @@ public class GameManager : MonoBehaviour
        // Destroy(playerObject);
         entity.canAttack = false;
         isPaused = true;
-        EndGameMenu();
+        EndGameMenu("You have Died");
         
     }
     // Update is called once per frame
@@ -271,10 +260,22 @@ public class GameManager : MonoBehaviour
                 ShowTimeOfRun();
 
         }
+
+        if(Input.GetKeyDown(KeyCode.Escape) && !isPaused)
+        {
+            PauseMenu();
+        }
+
     }
 
-
-
+    public void PauseMenu()
+    {
+        isPaused = true;
+        pauseMenu.SetActive(true);
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.None;
+    }
     public void ShowTimeOfRun()
     {
         string timeString = mainThreadTime.ToString() + "0000";
@@ -284,20 +285,34 @@ public class GameManager : MonoBehaviour
     public void RestartLevel()
     {
         isPaused = false;
-        player = new Player();
+        PlayerCreation();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    public void EndGameMenu()
+    public void EndGameMenu(string input)
     {
+        endGameMenu.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = input;
+        isPaused = true;
         endGameMenu.SetActive(true);
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.lockState = CursorLockMode.None;
     }
 
+    public void MainMenu()
+    {
+        SceneManager.LoadScene("MainScreen");
+    }
+
+    public void ResumeGame()
+    {
+        Debug.Log("Resume");
+        isPaused = false;
+        pauseMenu.SetActive(false);
+    }
     public void StartGame()
     {
+        isPaused = false;
         SceneManager.LoadScene("Maze");
     }
     public void Quit()

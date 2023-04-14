@@ -106,8 +106,14 @@ public class PlayerController : MonoBehaviour
         //Debug.Log(collision.transform.tag);
         if (collision.transform.tag == "Ground")
         {
-         grounded = true;
+            grounded = true;
         }
+
+        if(collision.transform.name == "EndMaze")
+        {
+            gameManager.EndGameMenu("You have won. With a Time of: \n" + gameManager.mainThreadTime);
+        }
+
     }
 
     private void OnCollisionExit(Collision collision)
