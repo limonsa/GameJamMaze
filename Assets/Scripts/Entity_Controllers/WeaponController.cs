@@ -88,14 +88,16 @@ public class WeaponController : MonoBehaviour
             getGift();
         }
 
-        if(other.gameObject.tag == "Zombie")
+        //public void DamageEnemy(Entity entity, GameObject entityObject)
+        if (other.gameObject.tag == "Zombie")
         {
             Debug.Log("hit enemy");
         }
         if (other.gameObject.tag == "Golem")
         {
             Debug.Log("hit enemy");
-            //other.gameObject.GetComponent<>
+            // example
+            //gameManager.DamageEnemy(other.gameObject.GetComponent<GolemContoller>().golem, other.gameObject);
         }
     }
 }
