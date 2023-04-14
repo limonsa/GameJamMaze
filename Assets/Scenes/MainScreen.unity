@@ -881,7 +881,7 @@ GameObject:
   - component: {fileID: 742104618}
   m_Layer: 0
   m_Name: GameManager
-  m_TagString: Untagged
+  m_TagString: GameManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -901,6 +901,8 @@ MonoBehaviour:
   isPaused: 0
   EnemyList: []
   playerObject: {fileID: 0}
+  endGameMenu: {fileID: 0}
+  timer: {fileID: 0}
   mainThreadTime: 0
 --- !u!4 &742104619
 Transform:
@@ -2279,7 +2281,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1955488519
 RectTransform:
   m_ObjectHideFlags: 0

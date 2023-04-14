@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 using Entities;
 public class GameManager : MonoBehaviour
 {
@@ -11,19 +12,22 @@ public class GameManager : MonoBehaviour
 
     public List<GameObject> EnemyList = null;
     public Player player;
+
+
     public GameObject playerObject = null;
+    public GameObject endGameMenu = null;
+    public GameObject timer = null;
+    
     
     private float weaponAddedForce = 0; //Force added to the attack after findng a Secret weapon
 
-    private void Start()
-    {
-
-        DontDestroyOnLoad(this);
-        PlayerCreation();
-        FindAllEnemies();
-    }
+   
     void Awake()
     {
+        if(GameObject.FindGameObjectsWithTag("GameManager").Length > 1)
+        {
+            Destroy(this.gameObject);
+        }
         
         if(playerObject == null)
         {
@@ -33,6 +37,55 @@ public class GameManager : MonoBehaviour
                 Debug.Log("No Plyaer Present in this scene");
         }
 
+        if(timer == null)
+        {
+            if (GameObject.Find("Time"))
+                timer = GameObject.Find("Time");
+            else
+                Debug.Log("No Timer in Area");
+        }
+
+        if(endGameMenu == null)
+        {
+            if (GameObject.Find("EndGameMenu"))
+                endGameMenu = GameObject.Find("EndGameMenu").transform.GetChild(0).gameObject;
+            else
+                Debug.Log("No EndGameMenu in Area");
+        }
+
+        SceneManager.sceneLoaded += OnLoad;
+        DontDestroyOnLoad(this);
+        PlayerCreation();
+        //FindAllEnemies();
+
+    }
+
+    public void OnLoad(Scene scene, LoadSceneMode mode)
+    {
+        mainThreadTime = 0;
+        if (playerObject == null)
+        {
+            if (GameObject.Find("Player"))
+                playerObject = GameObject.Find("Player");
+            else
+                Debug.Log("No Plyaer Present in this scene");
+        }
+
+        if (timer == null)
+        {
+            if (GameObject.Find("Time"))
+                timer = GameObject.Find("Time");
+            else
+                Debug.Log("No Timer in Area");
+        }
+
+        if (endGameMenu == null)
+        {
+            if (GameObject.Find("EndGameMenu"))
+                endGameMenu = GameObject.Find("EndGameMenu").transform.GetChild(0).gameObject;
+            else
+                Debug.Log("No EndGameMenu in Area");
+        }
     }
 
     private void FindAllEnemies()
@@ -68,6 +121,8 @@ public class GameManager : MonoBehaviour
                 {
                     SetIdle();
                 }
+                else if(eAnimations.GetBool("noticePlayer"))
+                    SetIdle();
                 return Vector3.zero;
             }
         }
@@ -167,7 +222,7 @@ public class GameManager : MonoBehaviour
             {
                 Debug.DrawRay(eObjectTransform.position + new Vector3(0, 1, 0), lookRotation * Vector3.forward * entity.noticeSphere, Color.red);
                 eAnimations.SetBool("isAware", false);
-               // Debug.Log(hit.transform.name);
+                Debug.Log(hit.transform.tag);
 
             }
         }
@@ -196,6 +251,9 @@ public class GameManager : MonoBehaviour
        
        // Destroy(playerObject);
         entity.canAttack = false;
+        isPaused = true;
+        EndGameMenu();
+        
     }
     // Update is called once per frame
 
@@ -203,27 +261,39 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        mainThreadTime += Time.deltaTime;
-        if (playerObject != null) 
-            player.position = playerObject.transform.position;
+        if (!isPaused)
+        {
+            mainThreadTime += Time.deltaTime;
+            if (playerObject != null)
+                player.position = playerObject.transform.position;
+
+            if (timer != null)
+                ShowTimeOfRun();
+
+        }
     }
 
 
 
     public void ShowTimeOfRun()
     {
-
+        string timeString = mainThreadTime.ToString() + "0000";
+        timer.GetComponent<TextMeshProUGUI>().text = timeString.Substring(0,4);
     }
 
     public void RestartLevel()
     {
-
+        isPaused = false;
+        player = new Player();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    private void FixedUpdate()
+    public void EndGameMenu()
     {
-       
-        
+        endGameMenu.SetActive(true);
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     public void StartGame()

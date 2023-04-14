@@ -4,6 +4,9 @@ using UnityEngine;
 using Entities;
 public class PlayerController : MonoBehaviour
 {
+
+    GameManager gameManager;
+
     [Header("Movement")]
     private float moveSpeed;
     public float walkSpeed;
@@ -65,30 +68,35 @@ public class PlayerController : MonoBehaviour
     Player player;
     private void Start()
     {
-        player = GameObject.Find("GameManager").GetComponent<GameManager>().player;
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        player = gameManager.player;
         rb = transform.GetComponent<Rigidbody>();
         rb.freezeRotation = true;
     }
 
     private void Update()
     {
-        //grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
-        MyInput();
-        SpeedControl();
-        StateHandler();
+        if (!gameManager.isPaused)
+        {
+            //grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
+            MyInput();
+            SpeedControl();
+            StateHandler();
 
-        if (grounded)
-        {
-            rb.drag = groundDrag;
-        }
-        else
-        {
-            rb.drag = 0;
+            if (grounded)
+            {
+                rb.drag = groundDrag;
+            }
+            else
+            {
+                rb.drag = 0;
+            }
         }
     }
 
     private void FixedUpdate()
     {
+        if(!gameManager.isPaused)
         MovePlayer(); 
     }
 

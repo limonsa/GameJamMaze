@@ -9,6 +9,7 @@ TagManager:
   - Ground
   - Zombie
   - Golem
+  - GameManager
   layers:
   - Default
   - TransparentFX

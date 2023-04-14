@@ -76,30 +76,33 @@ public class Zombie_Controller : MonoBehaviour
 
     public void FixedUpdate()
     {
-        if (zombie.canMove)
+        if (!gameManager.isPaused)
         {
-            zombie.position = this.transform.position;
-            Vector3 distance = gameManager.DetectPlayer(this.transform, zombie, zAnimations);
-
-            if (zAnimations.GetBool("noticePlayer"))
+            if (zombie.canMove)
             {
-                //zAnimations.SetBool("isAware", true);
-                gameManager.RotateEntity(this.transform, distance, zombie, zAnimations);
-                //gAnimations.SetBool("walk", true);
-            }
+                zombie.position = this.transform.position;
+                Vector3 distance = gameManager.DetectPlayer(this.transform, zombie, zAnimations);
 
-            if (zAnimations.GetBool("isAware"))
-            {
-                zAnimations.SetBool("idle", false);
-                zAnimations.SetBool("walk", true);
-                gameManager.MoveEntity(zAnimations, zombie, this.gameObject);
-            }
-            else
-            {
-                zAnimations.SetBool("idle", true);
-                zAnimations.SetBool("walk", false);
-            }
+                if (zAnimations.GetBool("noticePlayer"))
+                {
+                    //zAnimations.SetBool("isAware", true);
+                    gameManager.RotateEntity(this.transform, distance, zombie, zAnimations);
+                    //gAnimations.SetBool("walk", true);
+                }
 
+                if (zAnimations.GetBool("isAware"))
+                {
+                    zAnimations.SetBool("idle", false);
+                    zAnimations.SetBool("walk", true);
+                    gameManager.MoveEntity(zAnimations, zombie, this.gameObject);
+                }
+                else
+                {
+                    zAnimations.SetBool("idle", true);
+                    zAnimations.SetBool("walk", false);
+                }
+
+            }
         }
     }
     public void AttackEnd()

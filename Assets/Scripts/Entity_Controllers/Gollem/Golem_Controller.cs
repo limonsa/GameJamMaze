@@ -26,13 +26,10 @@ public class Golem_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameManager.isPaused == false)
-        {
             if (!golem.canAttack && !golem.canMove)
             {
                 golem.canMove = true;
-                gAnimations.SetBool("idle", true);
-                gAnimations.SetBool("attack", false);
+                gameManager.SetEntityIdle(gAnimations, golem, this.gameObject);
             }
 
             if (gameManager.player.isAlive == false)
@@ -44,13 +41,13 @@ public class Golem_Controller : MonoBehaviour
              //   this.transform.Translate(Vector3.forward * golem.moveSpeed * Time.deltaTime);
             }
 
-        }
+        
     }
 
     private void FixedUpdate()
     {
 
-        if (golem.canMove)
+        if (golem.canMove && !gameManager.isPaused)
         {
             golem.position = this.transform.position;
             Vector3 distance = gameManager.DetectPlayer(this.transform, golem, gAnimations);
@@ -61,10 +58,12 @@ public class Golem_Controller : MonoBehaviour
                 gameManager.RotateEntity(this.transform, distance, golem, gAnimations);
                 
             }
-            else if(gAnimations.GetBool("noticePlayer"))
+
+            if(!gAnimations.GetBool("noticePlayer"))
             {
                 golem.isRoaring = true;
             }
+
 
             if (gAnimations.GetBool("isAware") && golem.isRoaring == false)
             {
@@ -74,7 +73,7 @@ public class Golem_Controller : MonoBehaviour
             }
             else
             {
-                golem.isRoaring = true;
+                //golem.isRoaring = true;
                 gAnimations.SetBool("idle", true);
                 gAnimations.SetBool("walk", false);
             }
