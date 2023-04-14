@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     public float walkSpeed;
     public float sprintSpeed;
     public float groundDrag;
+    public float wallRunSpeed;
+
 
     [Header("Jumping")]
     public float jumpForce;
@@ -24,7 +26,7 @@ public class PlayerController : MonoBehaviour
      [Header("Crouching")]
      public float crouchSpeed;
      public float crouchYScale;
-     private float startYScale;
+     private float startYScale = 1;
 
     [Header("KeyBinds")]
     public KeyCode jumpKey = KeyCode.Space;
@@ -52,16 +54,19 @@ public class PlayerController : MonoBehaviour
     {
         walking,
         sprinting,
+        wallRunning,
         air,
         crouching
     }
+    public bool wallRunning;
+    public bool crouching;
 
     //grapbing player from game COntroller
     Player player;
     private void Start()
     {
         player = GameObject.Find("GameManager").GetComponent<GameManager>().player;
-        rb = transform.GetComponent<Rigidbody>();//this.transform.GetChild(0).transform.GetComponent<Rigidbody>();
+        rb = transform.GetComponent<Rigidbody>();
         rb.freezeRotation = true;
     }
 
@@ -113,14 +118,20 @@ public class PlayerController : MonoBehaviour
     }
 
     private void StateHandler()
+
     {
-        if (Input.GetKey(crouchKey))
+        if (wallRunning)
+        {
+            state = MovementState.wallRunning;
+            moveSpeed = wallRunSpeed;
+        }
+        else if (Input.GetKey(crouchKey))
         {
             state = MovementState.crouching;
             moveSpeed = crouchSpeed;
         }
 
-        if(grounded && Input.GetKey(sprintKey))
+        else if(grounded && Input.GetKey(sprintKey))
         {
             state = MovementState.sprinting;
             moveSpeed = sprintSpeed;
@@ -176,7 +187,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(crouchKey))
         {
             transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
-            rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+            rb.AddForce(Vector3.down * 0.5f, ForceMode.Force);
         }
 
         if (Input.GetKeyUp(crouchKey))
@@ -198,7 +209,7 @@ public class PlayerController : MonoBehaviour
 
         else
         {
-        Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        Vector3 flatVel = new(rb.velocity.x, 0f, rb.velocity.z);
 
             if (flatVel.magnitude > moveSpeed)
             {
