@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.00080954505, g: 0.004162026, b: 0.020064274, a: 1}
+  m_IndirectSpecularColor: {r: 0.0008095366, g: 0.004161895, b: 0.020063972, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -25266,9 +25266,11 @@ MonoBehaviour:
   isPaused: 0
   EnemyList: []
   playerObject: {fileID: 0}
+  playerUIController: {fileID: 0}
+  weaponController: {fileID: 0}
+  mainThreadTime: 0
   endGameMenu: {fileID: 0}
   timer: {fileID: 0}
-  mainThreadTime: 0
 --- !u!4 &1083129520
 Transform:
   m_ObjectHideFlags: 0
@@ -39328,6 +39330,7 @@ GameObject:
   - component: {fileID: 1381304545}
   - component: {fileID: 1381304544}
   - component: {fileID: 1381304543}
+  - component: {fileID: 1381304547}
   m_Layer: 5
   m_Name: PlayerUI
   m_TagString: Untagged
@@ -39422,6 +39425,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1381304547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1381304542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0875f6c65fb24a70a46e0ef7d9d1183, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &1384088362
 Mesh:
   m_ObjectHideFlags: 0
