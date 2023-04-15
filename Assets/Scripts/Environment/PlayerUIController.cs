@@ -24,7 +24,7 @@ public class PlayerUIController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //ShowTimeOfRun();
+        ShowTimeOfRun(gameManager.mainThreadTime);
     }
 
     public void ShowTimeOfRun(float _mainThreadTime)
