@@ -130,19 +130,22 @@ public class WeaponController : MonoBehaviour
      * Destroys the object that this script is attached toRuns when 
      * an object collides with the object that this script is attached to
      */
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.name == "Player")
+    private void OnCollisionEnter(Collision other)
+    { 
+        if (other.gameObject.name.Contains("Player"))
         {
-            Debug.Log("COLLITION BETWEEN PLAYER AND WEAPON");
+            //Debug.Log("COLLITION BETWEEN PLAYER AND WEAPON");
             getGift();
         }else if (other.gameObject.tag == "Zombie") //public void DamageEnemy(Entity entity, GameObject entityObject)
         {
             Debug.Log("hit enemy");
+            gameManager.DamageEnemy(other.gameObject.GetComponent<Zombie>(), other.gameObject);
+
         }
         else if (other.gameObject.tag == "Golem")
         {
             Debug.Log("hit enemy");
+            gameManager.DamageEnemy(other.gameObject.GetComponent<Golem>(), other.gameObject);
             // example
             //gameManager.DamageEnemy(other.gameObject.GetComponent<GolemContoller>().golem, other.gameObject);
         }
