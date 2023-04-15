@@ -264,32 +264,21 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        mainThreadTime += Time.deltaTime;
-        if (playerObject != null) {
-            player.position = playerObject.transform.position;
-            ShowTimeOfRun();
-            //playerUIController.ShowTimeOfRun(mainThreadTime);
-        }
         
-    }
 
-
-    public void ShowTimeOfRun()
-    {
-        
         if (!isPaused)
         {
             mainThreadTime += Time.deltaTime;
             if (playerObject != null)
+            {
                 player.position = playerObject.transform.position;
-
-            /*if (timer != null)
-                ShowTimeOfRun();*/
-                
+                ShowTimeOfRun();
+                //playerUIController.ShowTimeOfRun(mainThreadTime);
+            }
 
         }
 
-        if(Input.GetKeyDown(KeyCode.Escape) && !isPaused)
+        if (Input.GetKeyDown(KeyCode.Escape) && !isPaused)
         {
             PauseMenu();
         }
@@ -304,11 +293,11 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.lockState = CursorLockMode.None;
     }
-    /*public void ShowTimeOfRun()
+    public void ShowTimeOfRun()
     {
         string timeString = mainThreadTime.ToString() + "0000";
         timer.GetComponent<TextMeshProUGUI>().text = timeString.Substring(0,4);
-    }*/
+    }
 
     public void RestartLevel()
     {
@@ -336,7 +325,9 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Resume");
         isPaused = false;
-        pauseMenu.SetActive(false);
+        pauseMenu.SetActive(false); 
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
     public void StartGame()
     {
