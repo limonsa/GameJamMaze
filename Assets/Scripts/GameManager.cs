@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using Entities;
-using TMPro;
-using System;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -332,7 +331,7 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         isPaused = false;
-        SceneManager.LoadScene("Maze");
+        SceneManager.LoadScene("Maze 1");
     }
     public void Quit()
     {
