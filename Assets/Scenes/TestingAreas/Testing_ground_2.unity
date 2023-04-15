@@ -555,7 +555,11 @@ MonoBehaviour:
   isPaused: 0
   EnemyList: []
   playerObject: {fileID: 425279457}
+  playerUIController: {fileID: 0}
+  weaponController: {fileID: 0}
   mainThreadTime: 0
+  endGameMenu: {fileID: 0}
+  timer: {fileID: 0}
 --- !u!4 &1224919740
 Transform:
   m_ObjectHideFlags: 0
@@ -842,7 +846,7 @@ PrefabInstance:
     - target: {fileID: 6111876805223638821, guid: d9dbf926ca9afbc41b281ac894c3f076,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6111876805223638821, guid: d9dbf926ca9afbc41b281ac894c3f076,
         type: 3}
@@ -962,7 +966,7 @@ PrefabInstance:
     - target: {fileID: 6609533840229107915, guid: d9dbf926ca9afbc41b281ac894c3f076,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6609533840229107915, guid: d9dbf926ca9afbc41b281ac894c3f076,
         type: 3}
