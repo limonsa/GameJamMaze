@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using Entities;
+using TMPro;
+using System;
+
 public class GameManager : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -15,13 +18,25 @@ public class GameManager : MonoBehaviour
 
 
     public GameObject playerObject = null;
+    public PlayerUIController playerUIController = null;
+    public WeaponController weaponController = null;
+    public float mainThreadTime = 0;
+
     public GameObject endGameMenu = null;
     public GameObject timer = null;
     private GameObject pauseMenu = null;
-    
+
     private float weaponAddedForce = 0; //Force added to the attack after findng a Secret weapon
 
-   
+    private void Start()
+    {
+        playerUIController = GameObject.Find("PlayerUI").GetComponent<PlayerUIController>();
+        weaponController = GetComponent<WeaponController>();
+        DontDestroyOnLoad(this);
+        PlayerCreation();
+        FindAllEnemies();
+    }
+
     void Awake()
     {
         if(GameObject.FindGameObjectsWithTag("GameManager").Length > 1)
@@ -43,9 +58,11 @@ public class GameManager : MonoBehaviour
         if (playerObject == null)
         {
             if (GameObject.Find("Player"))
+            {
                 playerObject = GameObject.Find("Player");
-            else
+            }else { 
                 Debug.Log("No Plyaer Present in this scene");
+            }
         }
 
         if (timer == null)
@@ -245,19 +262,30 @@ public class GameManager : MonoBehaviour
         
     }
     // Update is called once per frame
-
-    public float mainThreadTime = 0;
-
     void Update()
     {
+        mainThreadTime += Time.deltaTime;
+        if (playerObject != null) {
+            player.position = playerObject.transform.position;
+            ShowTimeOfRun();
+            //playerUIController.ShowTimeOfRun(mainThreadTime);
+        }
+        
+    }
+
+
+    public void ShowTimeOfRun()
+    {
+        
         if (!isPaused)
         {
             mainThreadTime += Time.deltaTime;
             if (playerObject != null)
                 player.position = playerObject.transform.position;
 
-            if (timer != null)
-                ShowTimeOfRun();
+            /*if (timer != null)
+                ShowTimeOfRun();*/
+                
 
         }
 
@@ -276,11 +304,11 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.lockState = CursorLockMode.None;
     }
-    public void ShowTimeOfRun()
+    /*public void ShowTimeOfRun()
     {
         string timeString = mainThreadTime.ToString() + "0000";
         timer.GetComponent<TextMeshProUGUI>().text = timeString.Substring(0,4);
-    }
+    }*/
 
     public void RestartLevel()
     {

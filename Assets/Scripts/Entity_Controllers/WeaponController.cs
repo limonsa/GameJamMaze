@@ -13,13 +13,28 @@ public class WeaponController : MonoBehaviour
     int weaponType = 0; // 1 = BananaGun, 2 = Hammer, 3 = Katana
     public bool rotate; // do you want it to rotate?
     public float rotationSpeed;
+    public GameObject prefabKatana;
+    public GameObject prefabHammer;
+    public GameObject prefabBananaGun;
+
     public AudioClip collectSound;
     public GameObject collectEffect;
+
+    [Header("KeyBinds")]
+    public KeyCode katanaKey = KeyCode.R;      // 'R' key to grab the katana weapon
+    public KeyCode hammerKey = KeyCode.T;      // 'T' key to grab the hammer weapon
+    public KeyCode bananaGunKey = KeyCode.Y;   // 'Y' key to grab the BananaGun weapon
+    public KeyCode weaponAttack = KeyCode.Mouse0;   // With left mouse button the attack is made with the grabed weapon
+
 
     // Start is called before the first frame update
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        prefabKatana = Resources.Load("Secrets/Katana") as GameObject;
+        prefabHammer = Resources.Load("Secrets/Hammer") as GameObject;
+        prefabBananaGun = Resources.Load("Secrets/BananGun") as GameObject;
+
         rotate = true;
         rotationSpeed = 10f;
         if (gameObject.name.Contains("BananaGun")) {
@@ -39,9 +54,41 @@ public class WeaponController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (rotate)
+        if (rotate) {
             transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime, Space.World);
+        }
+
+        if (Input.GetKey(KeyCode.R)) {
+            gameManager.playerUIController.UseKatana();
+
+            /*if (Input.GetKey(weaponAttack)) {
+                gameManager.playerUIController.ShowAttack();
+                Debug.Log("SHOW KATANA ATTACK");
+            }*/
+        }else if (Input.GetKey(KeyCode.T)) {
+            gameManager.playerUIController.UseHammer();
+            
+        }else if (Input.GetKey(KeyCode.Y)){
+            gameManager.playerUIController.UseBananaGun();
+            
+        }
+
+        if (Input.GetKeyUp(KeyCode.R))
+        {
+            gameManager.playerUIController.StopUseWeaponX("Katana");
+        }
+        else if (Input.GetKeyUp(KeyCode.T))
+        {
+            gameManager.playerUIController.StopUseWeaponX("Hammer");
+        }
+        else if (Input.GetKeyUp(KeyCode.Y))
+        {
+            gameManager.playerUIController.StopUseWeaponX("BananaGun");
+
+        }
     }
+
+
 
     /*
      * Adds health to the player 
@@ -65,12 +112,15 @@ public class WeaponController : MonoBehaviour
         switch (weaponType) {
             case 1:
                 extraForce = tempBananaGun.damagePower;
+                gameManager.playerUIController.ObtainWeaponX("BananaGun");
                 break;
             case 2:
                 extraForce = tempHammer.damagePower;
+                gameManager.playerUIController.ObtainWeaponX("Hammer");
                 break;
             case 3:
                 extraForce = tempKatana.damagePower;
+                gameManager.playerUIController.ObtainWeaponX("Katana");
                 break;
         }
         gameManager.boostAttackPower(extraForce);
@@ -80,25 +130,40 @@ public class WeaponController : MonoBehaviour
      * Destroys the object that this script is attached toRuns when 
      * an object collides with the object that this script is attached to
      */
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.name == "Player")
         {
             Debug.Log("COLLITION BETWEEN PLAYER AND WEAPON");
             getGift();
-        }
-
-        //public void DamageEnemy(Entity entity, GameObject entityObject)
-        if (other.gameObject.tag == "Zombie")
+        }else if (other.gameObject.tag == "Zombie") //public void DamageEnemy(Entity entity, GameObject entityObject)
         {
             Debug.Log("hit enemy");
         }
-        if (other.gameObject.tag == "Golem")
+        else if (other.gameObject.tag == "Golem")
         {
             Debug.Log("hit enemy");
             // example
             //gameManager.DamageEnemy(other.gameObject.GetComponent<GolemContoller>().golem, other.gameObject);
         }
+    }
+
+    public GameObject getPrefab(string _name)
+    {
+        GameObject gob = null;
+        switch (_name)
+        {
+            case "Katana":
+                gob = prefabKatana;
+                break;
+            case "Hammer":
+                gob = prefabHammer;
+                break;
+            case "BananGun":
+                gob = prefabBananaGun;
+                break;
+        }
+        return gob;
     }
 }
 

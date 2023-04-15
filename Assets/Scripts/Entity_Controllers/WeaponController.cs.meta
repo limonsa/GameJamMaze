@@ -3,7 +3,16 @@ guid: ccc7547d1b5df4dca8a4e542ce9a8180
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - prefabKatana: {fileID: 4313787519548145616, guid: 082c3ec083a8c4d64b5ad11a8f34f006,
+      type: 3}
+  - prefabHammer: {fileID: 7474740825764675818, guid: edbb17c3d31fc425eb6d7c50a1ba62a1,
+      type: 3}
+  - prefabBananaGun: {fileID: 5655727472478481952, guid: 0ad374f6c36c54bc1842060fcc403e80,
+      type: 3}
+  - myPrefab: {instanceID: 0}
+  - collectSound: {instanceID: 0}
+  - collectEffect: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
