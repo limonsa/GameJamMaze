@@ -25115,7 +25115,7 @@ MonoBehaviour:
   isPaused: 0
   EnemyList: []
   playerObject: {fileID: 0}
-  playerUIController: {fileID: 0}
+  playerUIController: {fileID: 1381304547}
   weaponController: {fileID: 0}
   mainThreadTime: 0
   endGameMenu: {fileID: 0}
