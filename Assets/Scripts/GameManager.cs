@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Entities;
+using TMPro;
+using System;
+
 public class GameManager : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -12,25 +15,32 @@ public class GameManager : MonoBehaviour
     public List<GameObject> EnemyList = null;
     public Player player;
     public GameObject playerObject = null;
-    
+    public PlayerUIController playerUIController = null;
+    public WeaponController weaponController = null;
+    public float mainThreadTime = 0;
+
     private float weaponAddedForce = 0; //Force added to the attack after findng a Secret weapon
 
     private void Start()
     {
-
+        playerUIController = GameObject.Find("PlayerUI").GetComponent<PlayerUIController>();
+        weaponController = GetComponent<WeaponController>();
         DontDestroyOnLoad(this);
         PlayerCreation();
         FindAllEnemies();
     }
+
     void Awake()
     {
         
-        if(playerObject == null)
+        if (playerObject == null)
         {
             if (GameObject.Find("Player"))
+            {
                 playerObject = GameObject.Find("Player");
-            else
+            }else { 
                 Debug.Log("No Plyaer Present in this scene");
+            }
         }
 
     }
@@ -198,21 +208,22 @@ public class GameManager : MonoBehaviour
         entity.canAttack = false;
     }
     // Update is called once per frame
-
-    public float mainThreadTime = 0;
-
     void Update()
     {
         mainThreadTime += Time.deltaTime;
-        if (playerObject != null) 
+        if (playerObject != null) {
             player.position = playerObject.transform.position;
+            ShowTimeOfRun();
+        }
     }
 
 
-
+    /*
+     * Refreshes the timer value showed in by the PlayerUI
+     */
     public void ShowTimeOfRun()
     {
-
+        playerUIController.ShowTimeOfRun(mainThreadTime);
     }
 
     public void RestartLevel()
