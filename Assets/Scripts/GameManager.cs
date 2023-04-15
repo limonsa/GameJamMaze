@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        playerUIController = GameObject.Find("PlayerUI").GetComponent<PlayerUIController>();
+        //playerUIController = GameObject.Find("PlayerUI").GetComponent<PlayerUIController>();
         weaponController = GetComponent<WeaponController>();
         DontDestroyOnLoad(this);
         PlayerCreation();
@@ -54,6 +54,15 @@ public class GameManager : MonoBehaviour
     private void LoadObjects()
     {
         mainThreadTime = 0;
+
+        if(playerUIController == null)
+        {
+            if(GameObject.Find("PlayerUI"))
+            {
+                playerUIController = GameObject.Find("PlayerUI").GetComponent<PlayerUIController>();
+            }
+        }
+
         if (playerObject == null)
         {
             if (GameObject.Find("Player"))
