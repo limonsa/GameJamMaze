@@ -325,7 +325,9 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Resume");
         isPaused = false;
-        pauseMenu.SetActive(false);
+        pauseMenu.SetActive(false); 
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
     public void StartGame()
     {
